@@ -6,35 +6,37 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#050810">
-<title>⚡ FuturesBot v4</title>
+<title>⚡ Futures Trader</title>
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#050810;--s1:#0a0f1e;--s2:#0d1426;--border:#1e2d4a;
   --accent:#00d4ff;--purple:#7c3aed;--green:#00e676;--red:#ff1744;
-  --yellow:#ffd600;--orange:#ff6d00;--text:#e2e8f0;--muted:#64748b;
+  --yellow:#ffd600;--text:#e2e8f0;--muted:#64748b;
   --safe-top:env(safe-area-inset-top,0px);
   --safe-bot:env(safe-area-inset-bottom,0px);
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;padding-bottom:calc(74px + var(--safe-bot))}
+body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
 button{cursor:pointer;font-family:'Syne',sans-serif}
 input,select{font-family:'Syne',sans-serif}
 
-#setup{position:fixed;inset:0;z-index:300;background:var(--bg);display:flex;flex-direction:column;align-items:center;overflow-y:auto;padding:20px;padding-top:calc(20px + var(--safe-top))}
+/* ── SETUP ─────────────────────────────────── */
+#setup{
+  position:fixed;inset:0;z-index:300;background:var(--bg);
+  display:flex;flex-direction:column;align-items:center;
+  overflow-y:auto;padding:20px;
+  padding-top:calc(20px + var(--safe-top));
+}
 .sc{width:100%;max-width:460px;background:var(--s1);border:1px solid var(--border);border-radius:20px;padding:24px 20px}
 .slogo{display:flex;align-items:center;gap:10px;font-size:22px;font-weight:800;margin-bottom:4px}
 .sicon{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--purple));display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
-.ssub{color:var(--muted);font-size:12px;margin-bottom:18px}
+.ssub{color:var(--muted);font-size:12px;margin-bottom:20px}
 .flabel{display:block;font-size:10px;font-weight:700;letter-spacing:0.8px;color:var(--muted);margin-bottom:5px;text-transform:uppercase}
 .finput{width:100%;background:var(--s2);border:1px solid var(--border);border-radius:9px;padding:13px 14px;color:var(--text);font-family:'Space Mono',monospace;font-size:13px;outline:none;transition:border-color 0.2s;margin-bottom:12px;-webkit-appearance:none}
 .finput:focus{border-color:var(--accent)}
 .hint{font-size:11px;color:var(--muted);line-height:1.5;margin:-8px 0 12px}
-.lrow{display:flex;align-items:center;justify-content:space-between;background:var(--s2);border:1px solid var(--border);border-radius:9px;padding:11px 14px;margin-bottom:10px}
-.lbtns{display:flex;gap:5px}
-.lbtn{padding:7px 12px;border-radius:6px;border:1px solid var(--border);background:var(--s2);color:var(--muted);font-size:12px;font-weight:700;transition:all 0.15s}
-.lbtn.on{background:rgba(0,212,255,0.15);border-color:var(--accent);color:var(--accent)}
-.launch-btn{width:100%;padding:15px;background:linear-gradient(135deg,#00d4ff,#7c3aed);color:#fff;font-size:15px;font-weight:800;border:none;border-radius:11px;margin-top:6px}
+.launch-btn{width:100%;padding:15px;background:linear-gradient(135deg,#00d4ff,#7c3aed);color:#fff;font-size:15px;font-weight:800;border:none;border-radius:11px;margin-top:4px}
 .launch-btn:active{transform:scale(0.98)}
 .smsg{padding:11px 14px;border-radius:8px;font-size:12px;display:none;align-items:center;gap:8px;margin-bottom:12px;line-height:1.5}
 .smsg.show{display:flex}
@@ -42,272 +44,272 @@ input,select{font-family:'Syne',sans-serif}
 .smsg.ok{background:rgba(0,230,118,0.08);border:1px solid rgba(0,230,118,0.25);color:var(--green)}
 .smsg.info{background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.2);color:var(--accent)}
 
-#app{display:none;position:relative;z-index:1}
-.ahdr{position:sticky;top:0;z-index:100;background:rgba(5,8,16,0.96);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 16px;padding-top:var(--safe-top);height:calc(54px + var(--safe-top));display:flex;align-items:center;justify-content:space-between}
+/* ── APP ────────────────────────────────────── */
+#app{display:none}
+
+/* header */
+.hdr{
+  position:sticky;top:0;z-index:100;
+  background:rgba(5,8,16,0.96);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+  padding:0 16px;padding-top:var(--safe-top);
+  height:calc(54px + var(--safe-top));
+  display:flex;align-items:center;justify-content:space-between;
+}
 .hlogo{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:800}
 .hicon{width:28px;height:28px;border-radius:7px;background:linear-gradient(135deg,var(--accent),var(--purple));display:flex;align-items:center;justify-content:center;font-size:14px}
-.hright{display:flex;align-items:center;gap:8px}
-.pill{padding:3px 8px;border-radius:5px;font-size:10px;font-weight:700;letter-spacing:0.5px}
-.pfut{background:rgba(255,109,0,0.12);border:1px solid rgba(255,109,0,0.3);color:var(--orange)}
-.sdot{width:7px;height:7px;border-radius:50%;background:var(--muted);transition:all 0.3s}
-.sdot.on{background:var(--green);box-shadow:0 0 8px var(--green);animation:sdp 2s infinite}
-@keyframes sdp{0%,100%{opacity:1}50%{opacity:0.4}}
 .hbtn{padding:5px 10px;background:transparent;border:1px solid var(--border);border-radius:6px;color:var(--muted);font-size:11px;font-weight:700}
 
-.bnav{position:fixed;bottom:0;left:0;right:0;z-index:100;background:rgba(10,15,30,0.97);backdrop-filter:blur(16px);border-top:1px solid var(--border);display:flex;padding-bottom:var(--safe-bot)}
-.nbtn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:9px 4px;border:none;background:transparent;color:var(--muted);font-size:9px;font-weight:700}
-.nbtn .ni{font-size:19px;line-height:1}
-.nbtn.on{color:var(--accent)}
-.tpage{display:none}.tpage.on{display:block}
-.page{padding:14px;max-width:600px;margin:0 auto}
+.page{padding:14px;max-width:560px;margin:0 auto;padding-bottom:calc(20px + var(--safe-bot))}
 
-.card{background:var(--s1);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:12px}
-.chdr{padding:11px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
-.cbody{padding:14px 16px}
-
-.balhero{background:linear-gradient(135deg,#07112a,#0d1a38);border:1px solid rgba(0,212,255,0.15);border-radius:16px;padding:18px 16px;margin-bottom:12px}
-.ballabel{font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:5px}
-.balamount{font-family:'Space Mono',monospace;font-size:36px;font-weight:700;color:var(--accent);letter-spacing:-1px;line-height:1}
-.balsync{font-size:10px;color:var(--muted);margin-top:4px}
-.balgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:13px}
+/* ── BALANCE CARD ───────────────────────────── */
+.bal-card{
+  background:linear-gradient(135deg,#07112a,#0d1a38);
+  border:1px solid rgba(0,212,255,0.15);border-radius:16px;
+  padding:18px 16px;margin-bottom:14px;
+}
+.bal-label{font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px}
+.bal-amount{font-family:'Space Mono',monospace;font-size:38px;font-weight:700;color:var(--accent);letter-spacing:-1px;line-height:1}
+.bal-sub{font-size:11px;color:var(--muted);margin-top:4px}
+.bal-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px}
 .bitem{background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:10px;padding:9px 10px}
-.bitem .v{font-family:'Space Mono',monospace;font-size:12px;font-weight:700;margin-bottom:2px}
-.bitem .l{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.4px}
+.bitem .v{font-family:'Space Mono',monospace;font-size:13px;font-weight:700}
+.bitem .l{font-size:9px;color:var(--muted);margin-top:2px;text-transform:uppercase}
+.refresh-btn{width:100%;margin-top:10px;padding:9px;background:rgba(0,212,255,0.07);border:1px solid rgba(0,212,255,0.2);border-radius:8px;color:var(--accent);font-size:12px;font-weight:700}
 
-.sgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:12px}
-.scard{background:var(--s1);border:1px solid var(--border);border-radius:12px;padding:13px 11px;text-align:center}
-.sv{font-family:'Space Mono',monospace;font-size:20px;font-weight:700;line-height:1}
-.sl{font-size:9px;color:var(--muted);margin-top:5px;letter-spacing:0.5px;text-transform:uppercase}
+/* ── TRADE SETUP CARD ───────────────────────── */
+.trade-card{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:14px}
+.card-title{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between}
+
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.field{display:flex;flex-direction:column;gap:5px}
+.field label{font-size:10px;font-weight:700;color:var(--muted);letter-spacing:0.8px;text-transform:uppercase}
+.field select,.field input{
+  background:var(--s2);border:1px solid var(--border);border-radius:9px;
+  padding:11px 12px;color:var(--text);font-family:'Space Mono',monospace;font-size:13px;
+  outline:none;transition:border-color 0.2s;-webkit-appearance:none;width:100%;
+}
+.field select:focus,.field input:focus{border-color:var(--accent)}
+.field select{
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='7'%3E%3Cpath fill='%2364748b' d='M5 7L0 0h10z'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 10px center;padding-right:28px;
+}
+
+/* Pairs multi-select */
+.pairs-wrap{margin-bottom:12px}
+.pairs-grid{display:flex;flex-wrap:wrap;gap:7px;margin-top:6px}
+.pchip{
+  padding:8px 13px;border-radius:8px;
+  font-family:'Space Mono',monospace;font-size:11px;font-weight:700;
+  border:1px solid var(--border);background:var(--s2);color:var(--muted);
+  user-select:none;transition:all 0.15s;
+}
+.pchip.on{background:rgba(0,212,255,0.12);border-color:var(--accent);color:var(--accent)}
+
+/* Preview box */
+.preview{
+  background:var(--s2);border:1px solid var(--border);border-radius:10px;
+  padding:12px 14px;margin-bottom:14px;
+}
+.preview-title{font-size:10px;font-weight:700;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
+.prev-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.prev-item .pk{font-size:10px;color:var(--muted);margin-bottom:2px}
+.prev-item .pv{font-family:'Space Mono',monospace;font-size:13px;font-weight:700}
 .pos{color:var(--green)}.neg{color:var(--red)}.acc{color:var(--accent)}.wrn{color:var(--yellow)}
 
-.btn{display:flex;align-items:center;justify-content:center;gap:7px;padding:13px 10px;border-radius:11px;font-size:13px;font-weight:700;border:none;transition:all 0.15s;width:100%}
-.btn:active{transform:scale(0.97)}
-.btn-go{background:linear-gradient(135deg,#00e676,#00bfa5);color:#000}
-.btn-stp{background:var(--s2);color:var(--text);border:1px solid var(--border)}
-.btn-em{background:linear-gradient(135deg,#ff1744,#b71c1c);color:#fff;width:100%;font-size:13px;animation:emg 2.5s infinite}
-@keyframes emg{0%,100%{box-shadow:0 0 10px rgba(255,23,68,0.3)}50%{box-shadow:0 0 24px rgba(255,23,68,0.6)}}
-.cgrid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:9px}
-.alert{padding:10px 13px;border-radius:8px;font-size:12px;display:none;align-items:center;gap:8px;margin-bottom:10px;line-height:1.5}
-.alert.show{display:flex}
-.alert.ok{background:rgba(0,230,118,0.09);border:1px solid rgba(0,230,118,0.22);color:var(--green)}
-.alert.err{background:rgba(255,23,68,0.09);border:1px solid rgba(255,23,68,0.22);color:var(--red)}
-.alert.wrn{background:rgba(255,214,0,0.09);border:1px solid rgba(255,214,0,0.22);color:var(--yellow)}
+/* Direction toggle */
+.dir-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.dir-btn{
+  padding:13px;border-radius:10px;border:2px solid var(--border);
+  background:var(--s2);font-size:14px;font-weight:800;color:var(--muted);
+  transition:all 0.15s;
+}
+.dir-btn.long.on{background:rgba(0,230,118,0.1);border-color:var(--green);color:var(--green)}
+.dir-btn.short.on{background:rgba(255,23,68,0.1);border-color:var(--red);color:var(--red)}
 
-.hbar{height:5px;border-radius:3px;background:var(--s2);overflow:hidden;margin-top:5px}
-.hfill{height:100%;border-radius:3px;transition:width 0.5s,background 0.5s}
+/* BIG ACTION BUTTONS */
+.open-all-btn{
+  width:100%;padding:18px;border:none;border-radius:13px;
+  font-size:17px;font-weight:800;letter-spacing:0.3px;
+  transition:all 0.2s;margin-bottom:10px;
+}
+.open-all-btn.long{background:linear-gradient(135deg,#00e676,#00bfa5);color:#000}
+.open-all-btn.short{background:linear-gradient(135deg,#ff1744,#c62828);color:#fff}
+.open-all-btn:active{transform:scale(0.98)}
+.open-all-btn:disabled{opacity:0.4;transform:none}
 
-.clabel{display:block;font-size:10px;font-weight:700;letter-spacing:0.8px;color:var(--muted);margin-bottom:5px;text-transform:uppercase}
-.cselect{width:100%;background:var(--s2);border:1px solid var(--border);border-radius:9px;padding:11px 13px;color:var(--text);font-family:'Syne',sans-serif;font-size:12px;outline:none;margin-bottom:10px;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='7'%3E%3Cpath fill='%2364748b' d='M5 7L0 0h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:30px}
-.cinput{width:100%;background:var(--s2);border:1px solid var(--border);border-radius:9px;padding:11px 13px;color:var(--text);font-family:'Space Mono',monospace;font-size:12px;outline:none;transition:border-color 0.2s;margin-bottom:10px;-webkit-appearance:none}
-.cinput:focus{border-color:var(--accent)}
-.pgrid{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
-.pchip{padding:7px 11px;border-radius:7px;font-family:'Space Mono',monospace;font-size:10px;font-weight:700;border:1px solid var(--border);background:var(--s2);color:var(--muted);user-select:none}
-.pchip.on{background:rgba(0,212,255,0.1);border-color:var(--accent);color:var(--accent)}
-.save-btn{background:linear-gradient(135deg,var(--accent),var(--purple));color:#fff;padding:13px;font-size:13px;font-weight:700;border-radius:10px;border:none;width:100%;margin-top:4px}
-.save-btn:active{opacity:0.85}
+.close-all-btn{
+  width:100%;padding:14px;border:none;border-radius:12px;
+  background:linear-gradient(135deg,#ff6d00,#e65100);color:#fff;
+  font-size:15px;font-weight:800;
+  animation:orange-pulse 2.5s infinite;
+  transition:all 0.2s;margin-bottom:14px;
+}
+.close-all-btn:active{transform:scale(0.98)}
+.close-all-btn:disabled{opacity:0.3;animation:none}
+@keyframes orange-pulse{0%,100%{box-shadow:0 0 10px rgba(255,109,0,0.3)}50%{box-shadow:0 0 24px rgba(255,109,0,0.6)}}
 
-.twrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
-.ttable{width:100%;border-collapse:collapse;min-width:480px}
-.ttable th{font-size:9px;letter-spacing:0.8px;text-transform:uppercase;color:var(--muted);font-weight:700;text-align:left;padding:9px 12px;border-bottom:1px solid var(--border);white-space:nowrap}
-.ttable td{padding:10px 12px;font-family:'Space Mono',monospace;font-size:11px;border-bottom:1px solid rgba(30,45,74,0.4);white-space:nowrap}
-.badge{display:inline-flex;align-items:center;padding:2px 7px;border-radius:4px;font-size:9px;font-weight:700}
-.b-open{background:rgba(0,212,255,0.1);color:var(--accent)}
-.b-closed{background:rgba(0,230,118,0.1);color:var(--green)}
-.b-em{background:rgba(255,23,68,0.1);color:var(--red)}
-.b-long{background:rgba(0,230,118,0.1);color:var(--green)}
-.b-short{background:rgba(255,23,68,0.1);color:var(--red)}
+/* ── OPEN POSITIONS ─────────────────────────── */
+.positions-card{background:var(--s1);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:14px}
+.pos-hdr{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
+.no-pos{text-align:center;color:var(--muted);padding:28px;font-size:12px}
 
-.logwrap{background:#020408;border:1px solid var(--border);border-radius:10px;padding:12px;height:320px;overflow-y:auto;-webkit-overflow-scrolling:touch;font-family:'Space Mono',monospace;font-size:11px}
-.lentry{display:flex;gap:8px;padding:3px 0;border-bottom:1px solid rgba(30,45,74,0.3)}
-.lt{color:var(--muted);flex-shrink:0;font-size:10px}
-.lm{word-break:break-word;flex:1}
-.lINFO{color:var(--accent)}.lSUCCESS{color:var(--green)}.lWARN{color:var(--yellow)}.lERROR{color:var(--red)}
+.pos-item{
+  padding:14px 16px;border-bottom:1px solid rgba(30,45,74,0.5);
+  display:flex;align-items:center;gap:12px;
+}
+.pos-item:last-child{border-bottom:none}
+.pos-sym{font-family:'Space Mono',monospace;font-size:14px;font-weight:700;min-width:70px}
+.pos-details{flex:1}
+.pos-row1{display:flex;align-items:center;gap:8px;margin-bottom:3px}
+.pos-dir{padding:2px 7px;border-radius:4px;font-size:9px;font-weight:700}
+.pos-dir.long{background:rgba(0,230,118,0.1);color:var(--green)}
+.pos-dir.short{background:rgba(255,23,68,0.1);color:var(--red)}
+.pos-lev{font-size:10px;color:var(--accent);font-family:'Space Mono',monospace;font-weight:700}
+.pos-entry{font-size:10px;color:var(--muted);font-family:'Space Mono',monospace}
+.pos-pnl{font-family:'Space Mono',monospace;font-size:13px;font-weight:700;min-width:70px;text-align:right}
+.pos-sltp{font-size:9px;color:var(--muted);margin-top:2px;font-family:'Space Mono',monospace}
+.close-btn{
+  padding:8px 14px;border-radius:8px;border:1px solid rgba(255,23,68,0.3);
+  background:rgba(255,23,68,0.08);color:var(--red);font-size:11px;font-weight:700;
+  flex-shrink:0;white-space:nowrap;
+}
+.close-btn:active{background:rgba(255,23,68,0.2)}
 
-.ticker{display:flex;gap:14px;flex-wrap:wrap}
-.ti{display:flex;align-items:center;gap:6px}
-.tsym{font-size:10px;font-weight:700;color:var(--muted)}
-.tprice{font-family:'Space Mono',monospace;font-size:12px}
-.tchg{font-family:'Space Mono',monospace;font-size:10px}
+/* Status alert */
+.status-msg{
+  padding:11px 14px;border-radius:10px;font-size:12px;
+  display:none;align-items:center;gap:8px;margin-bottom:12px;line-height:1.5;
+}
+.status-msg.show{display:flex}
+.status-msg.ok{background:rgba(0,230,118,0.09);border:1px solid rgba(0,230,118,0.25);color:var(--green)}
+.status-msg.err{background:rgba(255,23,68,0.09);border:1px solid rgba(255,23,68,0.25);color:var(--red)}
+.status-msg.info{background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.2);color:var(--accent)}
+.status-msg.wrn{background:rgba(255,214,0,0.09);border:1px solid rgba(255,214,0,0.25);color:var(--yellow)}
 
-.pop-ov{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0.75);display:none;align-items:flex-end}
-.pop-ov.show{display:flex}
-.pop-box{width:100%;background:var(--s1);border-radius:20px 20px 0 0;padding:24px 20px;padding-bottom:calc(24px + var(--safe-bot));border-top:1px solid var(--border);animation:sup 0.3s ease}
-@keyframes sup{from{transform:translateY(100%)}to{transform:translateY(0)}}
-.pp-t{font-size:16px;font-weight:800;margin-bottom:6px}
-.pp-s{font-size:12px;color:var(--muted);margin-bottom:20px;line-height:1.6}
-.pp-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.pp-cancel{padding:13px;border-radius:10px;border:1px solid var(--border);background:var(--s2);color:var(--text);font-size:13px;font-weight:700}
-.pp-confirm{padding:13px;border-radius:10px;border:none;background:linear-gradient(135deg,#ff1744,#b71c1c);color:#fff;font-size:13px;font-weight:700}
+/* Loading spinner */
+.spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite;flex-shrink:0}
+@keyframes spin{to{transform:rotate(360deg)}}
 
-::-webkit-scrollbar{width:3px;height:3px}
+::-webkit-scrollbar{width:3px}
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
 </style>
 </head>
 <body>
 
-<!-- SETUP -->
+<!-- ══ SETUP ════════════════════════════════ -->
 <div id="setup">
 <div class="sc">
-  <div class="slogo"><div class="sicon">⚡</div>FuturesBot v4</div>
-  <div class="ssub">Binance USDⓈ-M Futures · Bug-fixed · Small profits · Multiple trades</div>
-
-  <div style="background:rgba(0,212,255,0.06);border:1px solid rgba(0,212,255,0.2);border-radius:10px;padding:12px;margin-bottom:14px;font-size:11px;color:var(--muted2);line-height:1.8">
-    ✅ Live balance direct from Binance<br>
-    ✅ Fixed qty precision calculation<br>
-    ✅ Fixed leverage NaN bug<br>
-    ✅ Lower signal threshold — more trades<br>
-    ✅ Logs exact reason for every skip
-  </div>
+  <div class="slogo"><div class="sicon">⚡</div>Futures Trader</div>
+  <div class="ssub">Manual multi-trade panel · One-click open all · One-click close all</div>
 
   <div id="smsg" class="smsg"></div>
 
   <label class="flabel">Binance Futures API Key</label>
-  <input class="finput" id="s-key" type="password" placeholder="API Key — Futures must be enabled" autocomplete="off">
+  <input class="finput" id="s-key" type="password" placeholder="API Key (Futures enabled)" autocomplete="off">
 
   <label class="flabel">Binance Futures Secret Key</label>
   <input class="finput" id="s-secret" type="password" placeholder="Secret Key" autocomplete="off">
 
-  <p class="hint">Binance → Profile → API Management → Edit Key → ✅ Enable Futures · ❌ Disable Withdrawals</p>
+  <p class="hint">Binance → Profile → API Management → Edit Key<br>✅ Enable Futures &nbsp;·&nbsp; ❌ Disable Withdrawals</p>
 
-  <div class="lrow">
-    <span style="font-size:12px;color:var(--muted2)">Leverage</span>
-    <div class="lbtns">
-      <button class="lbtn" onclick="setLev(5)">5x</button>
-      <button class="lbtn on" onclick="setLev(10)">10x</button>
-      <button class="lbtn" onclick="setLev(20)">20x</button>
-    </div>
-  </div>
-
-  <button class="launch-btn" onclick="launch()">⚡ Connect & Start</button>
+  <button class="launch-btn" onclick="launch()">⚡ Connect</button>
   <p style="font-size:10px;color:var(--muted);text-align:center;margin-top:10px">Keys saved locally 24h · No server needed</p>
 </div>
 </div>
 
-<!-- APP -->
+<!-- ══ APP ═══════════════════════════════════ -->
 <div id="app">
-<div class="ahdr">
-  <div class="hlogo"><div class="hicon">⚡</div>FuturesBot v4</div>
-  <div class="hright">
-    <span class="pill pfut">FUTURES</span>
-    <div class="sdot" id="sdot"></div>
-    <span id="btxt" style="font-size:11px;font-weight:700;color:var(--muted)">OFF</span>
+
+<div class="hdr">
+  <div class="hlogo"><div class="hicon">⚡</div>Futures Trader</div>
+  <div style="display:flex;align-items:center;gap:8px">
+    <span style="font-size:10px;font-weight:700;padding:3px 8px;border-radius:5px;background:rgba(255,109,0,0.12);border:1px solid rgba(255,109,0,0.3);color:#ff6d00">FUTURES</span>
     <button class="hbtn" onclick="logout()">Logout</button>
   </div>
 </div>
 
-<div class="bnav">
-  <button class="nbtn on" onclick="goTab('home',this)"><span class="ni">📊</span>Dashboard</button>
-  <button class="nbtn" onclick="goTab('trades',this)"><span class="ni">📋</span>Trades</button>
-  <button class="nbtn" onclick="goTab('config',this)"><span class="ni">⚙️</span>Settings</button>
-  <button class="nbtn" onclick="goTab('log',this)"><span class="ni">🖥️</span>Log</button>
-</div>
+<div class="page">
 
-<!-- HOME -->
-<div class="tpage on" id="t-home"><div class="page">
-
-  <div class="balhero">
-    <div class="ballabel">Futures Wallet — Live from Binance</div>
-    <div class="balamount" id="bal-total">—</div>
-    <div class="balsync" id="bal-sync">Connecting...</div>
-    <div class="balgrid">
+  <!-- Balance -->
+  <div class="bal-card">
+    <div class="bal-label">Futures Wallet — Live</div>
+    <div class="bal-amount" id="bal-total">—</div>
+    <div class="bal-sub" id="bal-sync">Connecting...</div>
+    <div class="bal-row">
       <div class="bitem"><div class="v acc" id="bal-avail">—</div><div class="l">Available</div></div>
       <div class="bitem"><div class="v" id="bal-upnl" style="color:var(--muted)">—</div><div class="l">Unrealised</div></div>
       <div class="bitem"><div class="v" id="bal-margin" style="color:var(--muted)">—</div><div class="l">In Margin</div></div>
     </div>
-    <button onclick="fetchBal()" style="margin-top:11px;width:100%;padding:9px;background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.2);border-radius:8px;color:var(--accent);font-size:12px;font-weight:700">🔄 Refresh Balance</button>
+    <button class="refresh-btn" onclick="fetchBal()">🔄 Refresh Balance</button>
   </div>
 
-  <div class="sgrid">
-    <div class="scard"><div class="sv acc" id="s-total">0</div><div class="sl">Trades</div></div>
-    <div class="scard"><div class="sv" id="s-pnl">$0.00</div><div class="sl">Realised P&L</div></div>
-    <div class="scard"><div class="sv pos" id="s-wins">0</div><div class="sl">Wins</div></div>
-    <div class="scard"><div class="sv neg" id="s-losses">0</div><div class="sl">Losses</div></div>
-  </div>
+  <!-- Status message -->
+  <div class="status-msg" id="status-msg"></div>
 
-  <div class="card">
-    <div class="chdr"><span>Bot Controls</span><span id="open-cnt" class="badge b-open">0 Open</span></div>
-    <div class="cbody">
-      <div class="alert" id="calert"></div>
-      <div style="background:var(--s2);border:1px solid var(--border);border-radius:9px;padding:11px;margin-bottom:10px;font-size:11px;line-height:1.8;color:var(--muted2)">
-        ⚡ Strategy: <strong id="strat-disp" style="color:var(--text)">RSI Scalp</strong><br>
-        🔀 Direction: <strong id="dir-disp" style="color:var(--text)">LONG</strong> &nbsp;·&nbsp;
-        📊 Leverage: <strong id="lev-disp" style="color:var(--accent)">10x</strong><br>
-        🎯 Target: <strong style="color:var(--green)">+0.3%–1% profit per trade</strong><br>
-        🔒 SL: auto (1×ATR) · TP: auto (2×ATR)
+  <!-- Trade Setup -->
+  <div class="trade-card">
+    <div class="card-title">
+      <span>Trade Setup</span>
+      <span id="trade-count-label" style="font-size:11px;color:var(--accent);font-family:monospace;letter-spacing:0;text-transform:none">— trades</span>
+    </div>
+
+    <!-- Direction -->
+    <div class="dir-row">
+      <button class="dir-btn long on" id="dir-long" onclick="setDir('LONG')">📈 LONG</button>
+      <button class="dir-btn short" id="dir-short" onclick="setDir('SHORT')">📉 SHORT</button>
+    </div>
+
+    <!-- Fields row 1 -->
+    <div class="field-row">
+      <div class="field">
+        <label>Leverage</label>
+        <select id="f-lev" onchange="calcPreview()">
+          <option value="5">5x</option>
+          <option value="10" selected>10x</option>
+          <option value="20">20x</option>
+          <option value="50">50x</option>
+        </select>
       </div>
-      <div class="cgrid">
-        <button class="btn btn-go" onclick="startBot()">▶ START BOT</button>
-        <button class="btn btn-stp" onclick="stopBot()">⏹ STOP</button>
-      </div>
-      <button class="btn btn-em" onclick="showEM()">🚨 EMERGENCY EXIT ALL POSITIONS</button>
-      <div style="margin-top:10px;background:var(--s2);border-radius:9px;padding:10px">
-        <div style="font-size:10px;color:var(--muted);letter-spacing:0.8px;margin-bottom:4px;text-transform:uppercase">Strategy Health</div>
-        <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px">
-          <span id="htxt">No trades yet</span><span id="hctxt" style="color:var(--muted)">—</span>
-        </div>
-        <div class="hbar"><div class="hfill" id="hfill" style="width:0%;background:var(--muted)"></div></div>
-        <div id="hpause" style="font-size:10px;color:var(--red);margin-top:5px;display:none"></div>
+      <div class="field">
+        <label>% Balance Per Trade</label>
+        <select id="f-risk" onchange="calcPreview()">
+          <option value="5">5%</option>
+          <option value="10">10%</option>
+          <option value="20" selected>20%</option>
+          <option value="30">30%</option>
+          <option value="50">50%</option>
+        </select>
       </div>
     </div>
-  </div>
 
-  <div class="card">
-    <div class="chdr"><span>Live Futures Prices</span><span id="ptim" style="text-transform:none;letter-spacing:0;font-size:10px">—</span></div>
-    <div class="cbody" style="padding:11px 14px"><div class="ticker" id="ticker"><span style="color:var(--muted);font-size:12px">Loading...</span></div></div>
-  </div>
-
-</div></div>
-
-<!-- TRADES -->
-<div class="tpage" id="t-trades"><div class="page">
-  <div class="card">
-    <div class="chdr"><span>Positions & History</span><span id="open-badge" class="badge b-open">0 Open</span></div>
-    <div class="twrap">
-      <table class="ttable">
-        <thead><tr>
-          <th>Symbol</th><th>Dir</th><th>Lev</th><th>Entry $</th><th>SL $</th><th>TP $</th><th>P&L</th><th>Status</th>
-        </tr></thead>
-        <tbody id="tbody"><tr><td colspan="8" style="text-align:center;color:var(--muted);padding:28px">No trades yet</td></tr></tbody>
-      </table>
+    <!-- Fields row 2 -->
+    <div class="field-row">
+      <div class="field">
+        <label>Take Profit %</label>
+        <select id="f-tp" onchange="calcPreview()">
+          <option value="0.3">0.3% (quick)</option>
+          <option value="0.5" selected>0.5%</option>
+          <option value="1.0">1.0%</option>
+          <option value="2.0">2.0%</option>
+          <option value="5.0">5.0%</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Stop Loss %</label>
+        <select id="f-sl" onchange="calcPreview()">
+          <option value="0.3">0.3%</option>
+          <option value="0.5" selected>0.5%</option>
+          <option value="1.0">1.0%</option>
+          <option value="2.0">2.0%</option>
+        </select>
+      </div>
     </div>
-  </div>
-</div></div>
 
-<!-- CONFIG -->
-<div class="tpage" id="t-config"><div class="page">
-  <div class="card">
-    <div class="chdr"><span>Settings</span></div>
-    <div class="cbody">
-      <label class="clabel">Signal Strategy</label>
-      <select class="cselect" id="c-strat">
-        <option value="scalp_rsi">⚡ RSI Scalp (oversold/overbought)</option>
-        <option value="scalp_bb">📊 Bollinger Bands Scalp</option>
-        <option value="scalp_ema">📈 EMA Cross Scalp</option>
-      </select>
-
-      <label class="clabel">Direction</label>
-      <select class="cselect" id="c-dir">
-        <option value="LONG">📈 LONG only (safer)</option>
-        <option value="BOTH">↕️ LONG + SHORT (more trades)</option>
-      </select>
-
-      <label class="clabel">Leverage</label>
-      <select class="cselect" id="c-lev">
-        <option value="5">5x</option>
-        <option value="10" selected>10x</option>
-        <option value="20">20x</option>
-        <option value="50">50x</option>
-      </select>
-
-      <label class="clabel">Timeframe for Signals</label>
-      <select class="cselect" id="c-tf">
-        <option value="1m">1 minute (most signals)</option>
-        <option value="3m" selected>3 minutes (balanced)</option>
-        <option value="5m">5 minutes (fewer, stronger)</option>
-      </select>
-
-      <label class="clabel">Trading Pairs</label>
-      <div class="pgrid" id="pgrid">
+    <!-- Pairs -->
+    <div class="pairs-wrap">
+      <label class="flabel" style="margin-bottom:6px">Select Pairs (opens 1 trade per pair)</label>
+      <div class="pairs-grid" id="pairs-grid">
         <div class="pchip on" data-p="BTCUSDT">BTC</div>
         <div class="pchip on" data-p="ETHUSDT">ETH</div>
         <div class="pchip on" data-p="SOLUSDT">SOL</div>
@@ -316,95 +318,108 @@ input,select{font-family:'Syne',sans-serif}
         <div class="pchip" data-p="ADAUSDT">ADA</div>
         <div class="pchip" data-p="DOGEUSDT">DOGE</div>
         <div class="pchip" data-p="LTCUSDT">LTC</div>
+        <div class="pchip" data-p="LINKUSDT">LINK</div>
+        <div class="pchip" data-p="TRXUSDT">TRX</div>
       </div>
+    </div>
 
-      <label class="clabel">Update API Keys</label>
-      <input class="cinput" id="c-key" type="password" placeholder="API Key">
-      <input class="cinput" id="c-secret" type="password" placeholder="Secret Key">
+    <!-- Preview -->
+    <div class="preview" id="preview">
+      <div class="preview-title">Preview — per trade</div>
+      <div class="prev-grid">
+        <div class="prev-item"><div class="pk">Margin per trade</div><div class="pv acc" id="prev-margin">—</div></div>
+        <div class="prev-item"><div class="pk">Notional (with lev)</div><div class="pv" id="prev-notional">—</div></div>
+        <div class="prev-item"><div class="pk">Take Profit at</div><div class="pv pos" id="prev-tp">—</div></div>
+        <div class="prev-item"><div class="pk">Stop Loss at</div><div class="pv neg" id="prev-sl">—</div></div>
+        <div class="prev-item"><div class="pk">Est. profit per trade</div><div class="pv pos" id="prev-profit">—</div></div>
+        <div class="prev-item"><div class="pk">Est. loss per trade</div><div class="pv neg" id="prev-loss">—</div></div>
+        <div class="prev-item"><div class="pk">Fee per trade</div><div class="pv wrn" id="prev-fee">—</div></div>
+        <div class="prev-item"><div class="pk">Trades selected</div><div class="pv acc" id="prev-count">—</div></div>
+      </div>
+    </div>
 
-      <button class="save-btn" onclick="saveConfig()">💾 Save & Apply</button>
+    <!-- OPEN ALL BUTTON -->
+    <button class="open-all-btn long" id="open-all-btn" onclick="openAllTrades()">
+      📈 OPEN ALL LONG TRADES
+    </button>
+
+    <!-- CLOSE ALL BUTTON -->
+    <button class="close-all-btn" id="close-all-btn" onclick="closeAllTrades()">
+      ⬛ CLOSE ALL POSITIONS
+    </button>
+
+  </div>
+
+  <!-- Open Positions -->
+  <div class="positions-card">
+    <div class="pos-hdr">
+      <span>Open Positions</span>
+      <span id="pos-count" style="font-family:monospace;letter-spacing:0;text-transform:none;font-size:11px;color:var(--accent)">0 open</span>
+    </div>
+    <div id="positions-list">
+      <div class="no-pos">No open positions</div>
     </div>
   </div>
-</div></div>
 
-<!-- LOG -->
-<div class="tpage" id="t-log"><div class="page">
-  <div class="card">
-    <div class="chdr"><span>Activity Log</span>
-      <button onclick="clearLog()" style="background:none;border:none;color:var(--muted);font-size:10px;cursor:pointer">Clear</button>
-    </div>
-    <div class="cbody" style="padding:11px 14px">
-      <div class="logwrap" id="logbox"><div style="color:var(--muted)">No activity yet...</div></div>
-    </div>
-  </div>
-</div></div>
-
-</div><!-- /app -->
-
-<div class="pop-ov" id="em-pop">
-  <div class="pop-box">
-    <div class="pp-t">🚨 Emergency Exit</div>
-    <div class="pp-s">Market-close ALL open futures positions at current price. Cannot be undone.</div>
-    <div class="pp-btns">
-      <button class="pp-cancel" onclick="hideEM()">Cancel</button>
-      <button class="pp-confirm" onclick="doEM()">EXIT ALL NOW</button>
+  <!-- Closed Trades Summary -->
+  <div class="trade-card" id="summary-card" style="display:none">
+    <div class="card-title"><span>Session Summary</span></div>
+    <div class="prev-grid">
+      <div class="prev-item"><div class="pk">Total Closed</div><div class="pv acc" id="sum-total">0</div></div>
+      <div class="prev-item"><div class="pk">Net P&L</div><div class="pv" id="sum-pnl">$0.00</div></div>
+      <div class="prev-item"><div class="pk">Wins</div><div class="pv pos" id="sum-wins">0</div></div>
+      <div class="prev-item"><div class="pk">Losses</div><div class="pv neg" id="sum-losses">0</div></div>
     </div>
   </div>
+
+</div>
 </div>
 
 <script>
 // ═══════════════════════════════════════════
-// CONSTANTS
+// CONSTANTS & PRECISION TABLE
 // ═══════════════════════════════════════════
-const FAPI     = 'https://fapi.binance.com';
-const SESS_KEY = 'fbv4_sess';
-const SESS_TTL = 24 * 60 * 60 * 1000;
-const TAKER    = 0.0005; // 0.05% per side
+const FAPI  = 'https://fapi.binance.com';
+const TAKER = 0.0005; // 0.05% per side
+const SESS  = 'ftr_v1';
 
-// Per-symbol precision cache — avoids slow exchangeInfo calls
-// BUG FIX: hard-coded common precisions to avoid timeout
-const SYM_PRECISION = {
-  BTCUSDT:  { qtyPrec:3, minQty:0.001,  minNot:100, step:0.001  },
-  ETHUSDT:  { qtyPrec:3, minQty:0.001,  minNot:20,  step:0.001  },
-  SOLUSDT:  { qtyPrec:0, minQty:1,      minNot:5,   step:1      },
-  BNBUSDT:  { qtyPrec:2, minQty:0.01,   minNot:5,   step:0.01   },
-  XRPUSDT:  { qtyPrec:0, minQty:1,      minNot:5,   step:1      },
-  ADAUSDT:  { qtyPrec:0, minQty:1,      minNot:5,   step:1      },
-  DOGEUSDT: { qtyPrec:0, minQty:1,      minNot:5,   step:1      },
-  LTCUSDT:  { qtyPrec:2, minQty:0.01,   minNot:5,   step:0.01   },
-  LINKUSDT: { qtyPrec:2, minQty:0.01,   minNot:5,   step:0.01   },
-  TRXUSDT:  { qtyPrec:0, minQty:1,      minNot:5,   step:1      },
+// Hardcoded precision — avoids slow exchangeInfo call
+const PREC = {
+  BTCUSDT : {qtyPrec:3, step:0.001,  minQty:0.001,  minNot:100},
+  ETHUSDT : {qtyPrec:3, step:0.001,  minQty:0.001,  minNot:20 },
+  SOLUSDT : {qtyPrec:0, step:1,      minQty:1,      minNot:5  },
+  BNBUSDT : {qtyPrec:2, step:0.01,   minQty:0.01,   minNot:5  },
+  XRPUSDT : {qtyPrec:0, step:1,      minQty:1,      minNot:5  },
+  ADAUSDT : {qtyPrec:0, step:1,      minQty:1,      minNot:5  },
+  DOGEUSDT: {qtyPrec:0, step:1,      minQty:1,      minNot:5  },
+  LTCUSDT : {qtyPrec:2, step:0.01,   minQty:0.01,   minNot:5  },
+  LINKUSDT: {qtyPrec:2, step:0.01,   minQty:0.01,   minNot:5  },
+  TRXUSDT : {qtyPrec:0, step:1,      minQty:1,      minNot:5  },
 };
 
 // ═══════════════════════════════════════════
 // STORAGE
 // ═══════════════════════════════════════════
 const LS = {
-  get(k)  { try{return JSON.parse(localStorage.getItem(k))}catch(e){return null} },
-  set(k,v){ try{localStorage.setItem(k,JSON.stringify(v))}catch(e){} },
-  del(k)  { localStorage.removeItem(k) }
+  get(k)  {try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},
+  set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}},
+  del(k)  {localStorage.removeItem(k)}
 };
-const saveSess   = d   => LS.set(SESS_KEY, {...d, ts:Date.now()});
-const clearSess  = ()  => LS.del(SESS_KEY);
+const saveSess  = d  => LS.set(SESS,{...d,ts:Date.now()});
+const clearSess = () => LS.del(SESS);
 function loadSess(){
-  const s = LS.get(SESS_KEY);
-  if(!s || Date.now()-s.ts > SESS_TTL){ LS.del(SESS_KEY); return null }
+  const s=LS.get(SESS);
+  if(!s||Date.now()-s.ts>86400000){LS.del(SESS);return null}
   return s;
 }
-const getTrades  = ()    => LS.get('fbv4_trades') || [];
-const setTrades  = arr   => LS.set('fbv4_trades', arr.slice(0,300));
-const addTrade   = t     => setTrades([t,...getTrades()]);
-const patchTrade = (id,u)=> { const a=getTrades(); const i=a.findIndex(t=>t.id===id); if(i>=0){a[i]={...a[i],...u};setTrades(a)} };
-const getStats   = ()    => LS.get('fbv4_stats') || {total:0,wins:0,losses:0,pnl:0,consec:0,paused:false,pauseReason:''};
-const setStats   = s     => LS.set('fbv4_stats',s);
-const getCfg     = ()    => LS.get('fbv4_cfg') || {strategy:'scalp_rsi',direction:'LONG',leverage:10,pairs:['BTCUSDT','ETHUSDT','SOLUSDT'],tf:'3m'};
-const setCfg     = c     => LS.set('fbv4_cfg',c);
-const getLogs    = ()    => LS.get('fbv4_logs') || [];
-function addLog(level, msg){
-  const a = getLogs(); a.unshift({level,msg,t:Date.now()});
-  LS.set('fbv4_logs', a.slice(0,500));
-  renderLogs();
-}
+
+// Local positions store (mirrors what we opened)
+const getPos    = ()    => LS.get('ftr_pos') || [];
+const setPos    = arr   => LS.set('ftr_pos', arr);
+const addPos    = p     => setPos([...getPos(), p]);
+const removePos = id    => setPos(getPos().filter(p=>p.id!==id));
+const getStats  = ()    => LS.get('ftr_stats') || {closed:0,wins:0,losses:0,pnl:0};
+const setStats  = s     => LS.set('ftr_stats',s);
 
 // ═══════════════════════════════════════════
 // BINANCE CLIENT
@@ -417,254 +432,80 @@ async function sign(msg, secret){
 }
 
 class Binance {
-  constructor(k,s){ this.k=k; this.s=s }
+  constructor(k,s){this.k=k; this.s=s}
 
-  async pub(path, p={}){
-    const qs = new URLSearchParams(p).toString();
-    const r  = await fetch(`${FAPI}${path}${qs?'?'+qs:''}`);
-    const txt= await r.text();
+  async pub(path,p={}){
+    const qs=new URLSearchParams(p).toString();
+    const r=await fetch(`${FAPI}${path}${qs?'?'+qs:''}`);
+    const txt=await r.text();
     if(!r.ok) throw new Error(txt);
     return JSON.parse(txt);
   }
 
-  async priv(path, p={}){
-    const ts  = Date.now();
-    const qs  = new URLSearchParams({...p,timestamp:ts}).toString();
-    const sig = await sign(qs,this.s);
-    const r   = await fetch(`${FAPI}${path}?${qs}&signature=${sig}`,{headers:{'X-MBX-APIKEY':this.k}});
-    const txt = await r.text();
+  async priv(path,p={}){
+    const ts=Date.now();
+    const qs=new URLSearchParams({...p,timestamp:ts}).toString();
+    const sig=await sign(qs,this.s);
+    const r=await fetch(`${FAPI}${path}?${qs}&signature=${sig}`,{headers:{'X-MBX-APIKEY':this.k}});
+    const txt=await r.text();
     if(!r.ok) throw new Error(txt);
     return JSON.parse(txt);
   }
 
-  async post(path, p={}){
-    const ts  = Date.now();
-    const qs  = new URLSearchParams({...p,timestamp:ts}).toString();
-    const sig = await sign(qs,this.s);
-    const r   = await fetch(`${FAPI}${path}?${qs}&signature=${sig}`,{method:'POST',headers:{'X-MBX-APIKEY':this.k}});
-    const txt = await r.text();
+  async post(path,p={}){
+    const ts=Date.now();
+    const qs=new URLSearchParams({...p,timestamp:ts}).toString();
+    const sig=await sign(qs,this.s);
+    const r=await fetch(`${FAPI}${path}?${qs}&signature=${sig}`,{method:'POST',headers:{'X-MBX-APIKEY':this.k}});
+    const txt=await r.text();
     if(!r.ok) throw new Error(txt);
     return JSON.parse(txt);
   }
 
-  // BALANCE — reads totalWalletBalance, availableBalance directly
   async balance(){
-    const a = await this.priv('/fapi/v2/account');
+    const a=await this.priv('/fapi/v2/account');
     return {
-      total    : parseFloat(a.totalWalletBalance    ||0),
-      available: parseFloat(a.availableBalance       ||0),
-      upnl     : parseFloat(a.totalUnrealizedProfit  ||0),
-      margin   : parseFloat(a.totalInitialMargin     ||0)
+      total    : parseFloat(a.totalWalletBalance   ||0),
+      available: parseFloat(a.availableBalance      ||0),
+      upnl     : parseFloat(a.totalUnrealizedProfit ||0),
+      margin   : parseFloat(a.totalInitialMargin    ||0)
     };
-  }
-
-  async positions(){
-    const d = await this.priv('/fapi/v2/positionRisk');
-    return d.filter(p=>Math.abs(parseFloat(p.positionAmt))>0);
   }
 
   price(sym){ return this.pub('/fapi/v1/ticker/price',{symbol:sym}).then(d=>parseFloat(d.price)) }
 
-  klines(sym, tf='3m'){
-    return this.pub('/fapi/v1/klines',{symbol:sym, interval:tf, limit:80});
-  }
-
-  ticker24(sym){ return this.pub('/fapi/v1/ticker/24hr',{symbol:sym}) }
-
-  async setLev(sym, lev){
-    try{ await this.post('/fapi/v1/leverage',{symbol:sym, leverage:String(lev)}) }
-    catch(e){ addLog('WARN',`setLev ${sym}: ${e.message.slice(0,80)}`) }
-  }
-
   async setIsolated(sym){
-    try{ await this.post('/fapi/v1/marginType',{symbol:sym, marginType:'ISOLATED'}) }
-    catch(e){ /* -4046 = already set, ignore */ }
+    try{await this.post('/fapi/v1/marginType',{symbol:sym,marginType:'ISOLATED'})}catch(e){}
   }
 
-  async openOrder(sym, side, qty){
-    // BUG FIX: qty must be a clean string, not scientific notation
-    return this.post('/fapi/v1/order',{symbol:sym, side, type:'MARKET', quantity:String(qty)});
+  async setLev(sym,lev){
+    try{await this.post('/fapi/v1/leverage',{symbol:sym,leverage:String(lev)})}catch(e){}
   }
 
-  async closeOrder(sym, side, qty){
-    return this.post('/fapi/v1/order',{symbol:sym, side, type:'MARKET', quantity:String(qty), reduceOnly:'true'});
+  async marketOrder(sym,side,qty){
+    return this.post('/fapi/v1/order',{symbol:sym,side,type:'MARKET',quantity:String(qty)});
   }
 
-  async closeAll(){
-    const pos = await this.positions();
-    const res = [];
-    for(const p of pos){
-      const qty  = Math.abs(parseFloat(p.positionAmt));
-      const side = parseFloat(p.positionAmt)>0?'SELL':'BUY';
-      try{
-        await this.post('/fapi/v1/order',{symbol:p.symbol,side,type:'MARKET',quantity:String(qty),reduceOnly:'true'});
-        res.push({sym:p.symbol,ok:true});
-      }catch(e){ res.push({sym:p.symbol,ok:false,err:e.message}) }
-    }
-    return res;
-  }
-}
-
-// ═══════════════════════════════════════════
-// INDICATORS
-// ═══════════════════════════════════════════
-const Ind = {
-  closes(kl){ return kl.map(k=>parseFloat(k[4])) },
-
-  rsi(c, n=14){
-    if(c.length < n+2) return [50];
-    let g=0,l=0;
-    for(let i=1;i<=n;i++){ const d=c[i]-c[i-1]; d>0?g+=d:l-=d }
-    let ag=g/n, al=l/n;
-    const r=[];
-    for(let i=n+1;i<c.length;i++){
-      const d=c[i]-c[i-1];
-      ag=(ag*(n-1)+Math.max(d,0))/n;
-      al=(al*(n-1)+Math.max(-d,0))/n;
-      r.push(al===0?100:100-100/(1+ag/al));
-    }
-    return r.length ? r : [50];
-  },
-
-  ema(c, n){
-    if(c.length < n) return [c[c.length-1]];
-    const k=2/(n+1);
-    let e=c.slice(0,n).reduce((a,b)=>a+b,0)/n;
-    const r=[e];
-    for(let i=n;i<c.length;i++){ e=c[i]*k+e*(1-k); r.push(e) }
-    return r;
-  },
-
-  bb(c, n=20, m=2){
-    if(c.length < n) n=c.length;
-    const sl=c.slice(-n);
-    const sma=sl.reduce((a,b)=>a+b,0)/n;
-    const std=Math.sqrt(sl.reduce((a,b)=>a+(b-sma)**2,0)/n);
-    return {upper:sma+m*std, mid:sma, lower:sma-m*std};
-  },
-
-  // ATR — volatility measure for auto SL/TP
-  atr(kl, n=14){
-    if(kl.length < 2) return parseFloat(kl[0]?.[4]||1)*0.003;
-    const tr=[];
-    for(let i=1;i<kl.length;i++){
-      const h=parseFloat(kl[i][2]), l=parseFloat(kl[i][3]), pc=parseFloat(kl[i-1][4]);
-      tr.push(Math.max(h-l, Math.abs(h-pc), Math.abs(l-pc)));
-    }
-    let a=tr.slice(0,Math.min(n,tr.length)).reduce((x,y)=>x+y,0)/Math.min(n,tr.length);
-    for(let i=n;i<tr.length;i++) a=(a*(n-1)+tr[i])/n;
-    return a;
-  }
-};
-
-// ═══════════════════════════════════════════
-// SIGNAL ENGINE — lowered thresholds for more trades
-// ═══════════════════════════════════════════
-function getSignal(klines, strategy){
-  const c     = Ind.closes(klines);
-  const price = c[c.length-1];
-  const rsi   = Ind.rsi(c, 14);
-  const r     = rsi[rsi.length-1];
-  const r1    = rsi[rsi.length-2] || r;
-  const atr   = Ind.atr(klines, 14);
-
-  let sig='HOLD', dir=null, conf=0, why='';
-
-  if(strategy==='scalp_rsi'){
-    // BUG FIX: lowered thresholds from 35/65 to 40/60 — fires much more often
-    if(r < 40 && r > r1)       { sig='BUY';  dir='LONG';  conf=72; why=`RSI bounce ${r.toFixed(0)} oversold` }
-    else if(r < 35)            { sig='BUY';  dir='LONG';  conf=82; why=`RSI ${r.toFixed(0)} deeply oversold` }
-    else if(r > 60 && r < r1)  { sig='SELL'; dir='SHORT'; conf=70; why=`RSI pullback ${r.toFixed(0)} overbought` }
-    else if(r > 65)            { sig='SELL'; dir='SHORT'; conf=80; why=`RSI ${r.toFixed(0)} very overbought` }
-    else                       { why=`RSI ${r.toFixed(0)} — neutral zone` }
+  async closePosition(sym,side,qty){
+    return this.post('/fapi/v1/order',{symbol:sym,side,type:'MARKET',quantity:String(qty),reduceOnly:'true'});
   }
 
-  else if(strategy==='scalp_bb'){
-    const bb  = Ind.bb(c, 20);
-    const pct = (price - bb.lower) / (bb.upper - bb.lower);
-    if(price <= bb.lower)                { sig='BUY';  dir='LONG';  conf=82; why=`Below BB lower RSI:${r.toFixed(0)}` }
-    else if(price >= bb.upper)           { sig='SELL'; dir='SHORT'; conf=80; why=`Above BB upper RSI:${r.toFixed(0)}` }
-    else if(pct < 0.25 && r < 45)       { sig='BUY';  dir='LONG';  conf=68; why=`Near BB lower pct:${(pct*100).toFixed(0)}%` }
-    else if(pct > 0.75 && r > 55)       { sig='SELL'; dir='SHORT'; conf=66; why=`Near BB upper pct:${(pct*100).toFixed(0)}%` }
-    else                                 { why=`BB pct:${(pct*100).toFixed(0)}% RSI:${r.toFixed(0)}` }
+  // Get real open positions from Binance (source of truth)
+  async livePositions(){
+    const d=await this.priv('/fapi/v2/positionRisk');
+    return d.filter(p=>Math.abs(parseFloat(p.positionAmt))>0);
   }
-
-  else if(strategy==='scalp_ema'){
-    const e9  = Ind.ema(c, 9);
-    const e21 = Ind.ema(c, 21);
-    const a9  = e9[e9.length-1],   a9p  = e9[e9.length-2]  || a9;
-    const a21 = e21[e21.length-1], a21p = e21[e21.length-2] || a21;
-    if(a9 > a21 && a9p <= a21p)        { sig='BUY';  dir='LONG';  conf=76; why=`EMA9 crossed above EMA21` }
-    else if(a9 < a21 && a9p >= a21p)   { sig='SELL'; dir='SHORT'; conf=74; why=`EMA9 crossed below EMA21` }
-    else if(a9 > a21 && r < 45)        { sig='BUY';  dir='LONG';  conf=65; why=`Above EMA, RSI low ${r.toFixed(0)}` }
-    else if(a9 < a21 && r > 55)        { sig='SELL'; dir='SHORT'; conf=63; why=`Below EMA, RSI high ${r.toFixed(0)}` }
-    else                                { why=`EMA spread ${((a9-a21)/price*100).toFixed(3)}%` }
-  }
-
-  return {sig, dir, conf, why, price, atr};
-}
-
-// ═══════════════════════════════════════════
-// POSITION SIZING — FIXED CALCULATION
-// BUG FIX: previous formula was wrong — this one is correct
-// Risk amount = available * 1% (small, safe)
-// Margin = risk / (sl% per margin unit)
-// ═══════════════════════════════════════════
-function calcPositionSize(price, atr, available, leverage){
-  // SL distance in price terms (1× ATR)
-  const slDist  = Math.max(atr * 1.0, price * 0.003); // min 0.3%
-  const tpDist  = slDist * 2.0;                        // 2:1 R/R
-  const slPct   = (slDist / price) * 100;
-  const tpPct   = (tpDist / price) * 100;
-
-  // How much USDT are we willing to lose on this trade?
-  // Risk 1% of available balance (very small, safe)
-  const riskUSDT = available * 0.01;
-
-  // Margin needed = riskUSDT / (slPct/100)
-  // Because: loss on margin = margin * leverage * (slDist/price) = riskUSDT
-  // => margin = riskUSDT / (leverage * slPct/100)
-  // BUG FIX: was dividing by wrong thing before
-  const marginRaw    = riskUSDT / (leverage * (slPct/100));
-  const margin       = Math.min(marginRaw, available * 0.15); // cap at 15% of balance
-  const notional     = margin * leverage;
-  const fee          = notional * TAKER * 2;
-  const expectedProfit = notional * (tpPct/100);
-
-  return {slDist, tpDist, slPct, tpPct, margin, notional, fee, expectedProfit};
-}
-
-// ═══════════════════════════════════════════
-// QUANTITY CALCULATION — FIXED
-// BUG FIX: handles precision correctly, no NaN
-// ═══════════════════════════════════════════
-function calcQty(notional, price, sym){
-  const info     = SYM_PRECISION[sym] || {qtyPrec:3, minQty:0.001, minNot:5, step:0.001};
-  const rawQty   = notional / price;
-  // Round DOWN to step size
-  const steps    = Math.floor(rawQty / info.step);
-  const qty      = parseFloat((steps * info.step).toFixed(info.qtyPrec));
-  return {qty, minQty:info.minQty, minNot:info.minNot, info};
 }
 
 // ═══════════════════════════════════════════
 // APP STATE
 // ═══════════════════════════════════════════
-let bot      = {running:false, timer:null, client:null};
+let api      = null;
 let sess     = null;
+let tradeDir = 'LONG';
 let selPairs = ['BTCUSDT','ETHUSDT','SOLUSDT'];
-let setupLev = 10;
-
-function setLev(v){
-  setupLev = v;
-  document.querySelectorAll('.lbtn').forEach(b=>b.classList.toggle('on', parseInt(b.textContent)===v));
-}
-
-function showSMsg(type, msg){
-  const e = document.getElementById('smsg');
-  e.className = `smsg ${type} show`;
-  e.textContent = msg;
-}
+let liveBal  = {total:0, available:0, upnl:0, margin:0};
+let priceCache = {};
 
 // ═══════════════════════════════════════════
 // SESSION RESTORE
@@ -672,11 +513,11 @@ function showSMsg(type, msg){
 window.addEventListener('load', ()=>{
   const s = loadSess();
   if(s){
-    sess     = s;
-    selPairs = s.pairs || ['BTCUSDT','ETHUSDT','SOLUSDT'];
-    bot.client = new Binance(s.key, s.secret);
-    showApp();
-    if(LS.get('fbv4_running')) setTimeout(()=>startBot(true), 1200);
+    sess = s;
+    api  = new Binance(s.key, s.secret);
+    document.getElementById('setup').style.display='none';
+    document.getElementById('app').style.display='block';
+    initApp();
   }
 });
 
@@ -686,67 +527,50 @@ window.addEventListener('load', ()=>{
 async function launch(){
   const key    = document.getElementById('s-key').value.trim();
   const secret = document.getElementById('s-secret').value.trim();
-  if(!key||!secret){ showSMsg('err','Enter both API Key and Secret Key'); return }
+  if(!key||!secret){ showSMsg('err','Enter both API Key and Secret'); return }
 
-  showSMsg('info','Connecting to Binance Futures...');
-
+  showSMsg('info','Connecting...');
   try{
-    const client = new Binance(key, secret);
-    const bal    = await client.balance();  // throws if keys invalid
+    const client = new Binance(key,secret);
+    const bal    = await client.balance();
 
-    sess = {key, secret, pairs:selPairs, leverage:setupLev, ts:Date.now()};
+    sess = {key, secret, ts:Date.now()};
     saveSess(sess);
+    api  = client;
+    liveBal = bal;
 
-    const cfg = getCfg();
-    cfg.pairs    = selPairs;
-    cfg.leverage = setupLev;
-    setCfg(cfg);
-
-    bot.client = client;
-    addLog('SUCCESS', `✅ Connected! Total:$${bal.total.toFixed(2)} Available:$${bal.available.toFixed(2)}`);
-    showApp();
-    updateBalUI(bal);
+    document.getElementById('setup').style.display='none';
+    document.getElementById('app').style.display='block';
+    initApp();
+    showStatus('ok',`✅ Connected! Available: $${bal.available.toFixed(2)} USDT`);
 
   }catch(e){
-    let m = e.message;
-    try{ const j=JSON.parse(m); m=j.msg||m }catch(x){}
-    if(m.includes('-2015')) m='Futures not enabled on this API key. Go to Binance → API Management → Edit → enable Futures.';
-    else if(m.includes('-1021')) m='Timestamp error — sync your phone clock and try again.';
-    else if(m.length > 150) m = m.slice(0,150)+'...';
-    showSMsg('err', m);
+    let m=e.message;
+    try{const j=JSON.parse(m);m=j.msg||m}catch(x){}
+    if(m.includes('-2015')) m='Futures not enabled on this key. Go to Binance → API Management → Edit → Enable Futures.';
+    else if(m.includes('-1021')) m='Clock sync error — sync your phone time and retry.';
+    else if(m.length>150) m=m.slice(0,150)+'...';
+    showSMsg('err',m);
   }
 }
 
-function showApp(){
-  document.getElementById('setup').style.display = 'none';
-  document.getElementById('app').style.display   = 'block';
-  initApp();
+function showSMsg(type,msg){
+  const e=document.getElementById('smsg');
+  e.className=`smsg ${type} show`;
+  e.textContent=msg;
 }
 
 // ═══════════════════════════════════════════
-// INIT
+// INIT APP
 // ═══════════════════════════════════════════
 function initApp(){
-  const cfg = getCfg();
-  selPairs  = sess.pairs || cfg.pairs || ['BTCUSDT','ETHUSDT','SOLUSDT'];
-
-  // BUG FIX: always parse leverage as integer
-  const lev = parseInt(sess.leverage || cfg.leverage || 10);
-
-  document.getElementById('c-strat').value  = cfg.strategy  || 'scalp_rsi';
-  document.getElementById('c-dir').value    = cfg.direction || 'LONG';
-  document.getElementById('c-lev').value    = String(lev);
-  document.getElementById('c-tf').value     = cfg.tf        || '3m';
-  document.getElementById('c-key').value    = sess.key      || '';
-  document.getElementById('c-secret').value = sess.secret   || '';
-  updateDispLabels();
   setupPairChips();
-
   fetchBal();
-  refreshUI();
-  setInterval(()=>{ fetchBal(); refreshUI() }, 6000);
-  updatePrices();
-  setInterval(updatePrices, 12000);
+  calcPreview();
+  renderPositions();
+  renderSummary();
+  // Auto-refresh balance and positions every 5s
+  setInterval(()=>{ fetchBal(); refreshLivePositions() }, 5000);
 }
 
 function setupPairChips(){
@@ -755,406 +579,417 @@ function setupPairChips(){
     c.onclick = ()=>{
       c.classList.toggle('on');
       selPairs = Array.from(document.querySelectorAll('.pchip.on')).map(x=>x.dataset.p);
+      calcPreview();
     };
   });
 }
 
-function updateDispLabels(){
-  const cfg = getCfg();
-  const stratNames = {scalp_rsi:'RSI Scalp', scalp_bb:'BB Scalp', scalp_ema:'EMA Scalp'};
-  document.getElementById('strat-disp').textContent = stratNames[cfg.strategy] || cfg.strategy;
-  document.getElementById('dir-disp').textContent   = cfg.direction || 'LONG';
-  document.getElementById('lev-disp').textContent   = parseInt(sess?.leverage||cfg.leverage||10)+'x';
-}
-
 // ═══════════════════════════════════════════
-// BALANCE — always live from Binance
+// BALANCE
 // ═══════════════════════════════════════════
 async function fetchBal(){
-  if(!bot.client) return;
+  if(!api) return;
   try{
-    const bal = await bot.client.balance();
-    updateBalUI(bal);
+    liveBal = await api.balance();
+    document.getElementById('bal-total').textContent  = '$'+liveBal.total.toFixed(2);
+    document.getElementById('bal-avail').textContent  = '$'+liveBal.available.toFixed(2);
+    document.getElementById('bal-sync').textContent   = 'Live · '+new Date().toLocaleTimeString();
+    const el = document.getElementById('bal-upnl');
+    el.textContent = (liveBal.upnl>=0?'+$':'-$')+Math.abs(liveBal.upnl).toFixed(2);
+    el.className   = 'v '+(liveBal.upnl>=0?'pos':'neg');
+    document.getElementById('bal-margin').textContent = '$'+liveBal.margin.toFixed(2);
+    calcPreview();
   }catch(e){
-    document.getElementById('bal-sync').textContent = '⚠️ '+e.message.slice(0,60);
-  }
-}
-
-function updateBalUI(bal){
-  document.getElementById('bal-total').textContent = '$'+bal.total.toFixed(2);
-  document.getElementById('bal-avail').textContent = '$'+bal.available.toFixed(2);
-  document.getElementById('bal-sync').textContent  = 'Live · '+new Date().toLocaleTimeString();
-  const el = document.getElementById('bal-upnl');
-  el.textContent = (bal.upnl>=0?'+$':'-$')+Math.abs(bal.upnl).toFixed(2);
-  el.className   = 'v '+(bal.upnl>=0?'pos':'neg');
-  document.getElementById('bal-margin').textContent = '$'+bal.margin.toFixed(2);
-}
-
-// ═══════════════════════════════════════════
-// BOT CONTROLS
-// ═══════════════════════════════════════════
-async function startBot(silent=false){
-  if(!bot.client){ ctrlAlert('err','No client — reconnect'); return }
-  saveConfig();
-
-  const stats = getStats();
-  if(stats.paused){ stats.paused=false; stats.pauseReason=''; stats.consec=0; setStats(stats) }
-
-  if(bot.timer) clearInterval(bot.timer);
-  bot.running = true;
-  LS.set('fbv4_running', true);
-
-  await runCycle();
-  bot.timer = setInterval(runCycle, 30000); // every 30 seconds
-
-  updateBotUI(true);
-  if(!silent) ctrlAlert('ok','✅ Bot running — scanning every 30s');
-  addLog('INFO', `Bot started | ${getCfg().direction} | ${getCfg().strategy} | ${parseInt(sess.leverage||10)}x | ${selPairs.join(',')}`);
-}
-
-async function stopBot(){
-  bot.running = false;
-  if(bot.timer){ clearInterval(bot.timer); bot.timer=null }
-  LS.del('fbv4_running');
-  updateBotUI(false);
-  ctrlAlert('wrn','⏹ Bot stopped');
-  addLog('WARN','Bot stopped');
-}
-
-function showEM(){ document.getElementById('em-pop').classList.add('show') }
-function hideEM(){ document.getElementById('em-pop').classList.remove('show') }
-
-async function doEM(){
-  hideEM();
-  addLog('WARN','🚨 EMERGENCY EXIT');
-  ctrlAlert('err','🚨 Closing all...');
-  try{
-    const res = await bot.client.closeAll();
-    let closed=0, failed=0;
-    res.forEach(r=>{ if(r.ok){closed++;addLog('WARN','Closed: '+r.sym)} else{failed++;addLog('ERROR','FAILED: '+r.sym+' '+r.err)} });
-    getTrades().filter(t=>t.status==='OPEN').forEach(t=>patchTrade(t.id,{status:'EMERGENCY_EXIT',closedAt:Date.now()}));
-    ctrlAlert('err',`🚨 ${closed} closed${failed?' | '+failed+' failed':''}`);
-  }catch(e){ addLog('ERROR','Emergency error: '+e.message) }
-  await stopBot();
-  refreshUI(); fetchBal();
-}
-
-// ═══════════════════════════════════════════
-// MAIN TRADING CYCLE — all bugs fixed
-// ═══════════════════════════════════════════
-async function runCycle(){
-  if(!bot.running) return;
-
-  const cfg    = getCfg();
-  const stats  = getStats();
-
-  if(stats.paused){
-    addLog('WARN','Paused: '+stats.pauseReason);
-    await stopBot(); ctrlAlert('err','🛑 '+stats.pauseReason); return;
-  }
-
-  try{
-    // 1. Live balance
-    const bal = await bot.client.balance();
-    updateBalUI(bal);
-
-    if(bal.available < 0.5){
-      addLog('WARN',`Available $${bal.available.toFixed(4)} too low`); return;
-    }
-
-    // 2. Check SL/TP on open trades
-    const openTrades = getTrades().filter(t=>t.status==='OPEN');
-    for(const t of openTrades){
-      try{
-        const price   = await bot.client.price(t.symbol);
-        const isShort = t.direction==='SHORT';
-        const slHit   = isShort ? price >= t.slPrice : price <= t.slPrice;
-        const tpHit   = isShort ? price <= t.tpPrice : price >= t.tpPrice;
-
-        if(slHit || tpHit){
-          const closeSide = isShort?'BUY':'SELL';
-          await bot.client.closeOrder(t.symbol, closeSide, t.qty);
-
-          const diff = isShort ? t.entryPrice-price : price-t.entryPrice;
-          const fee  = t.qty * price * TAKER;
-          const net  = diff * t.qty - fee;
-          const isWin= net > 0;
-
-          patchTrade(t.id,{status:'CLOSED', closedAt:Date.now(), closePrice:price, pnl:net});
-          addLog(isWin?'SUCCESS':'WARN',
-            `${slHit?'🔴 SL':'🟢 TP'} ${t.symbol} @ $${price.toFixed(4)} | Net:${net>=0?'+':''}$${net.toFixed(4)}`
-          );
-
-          const s = getStats();
-          s.total++; s.pnl+=net;
-          if(isWin){s.wins++;s.consec=0} else{s.losses++;s.consec++}
-          if(s.consec>=3){s.paused=true;s.pauseReason='3 consecutive losses — tap START to resume'}
-          setStats(s); refreshUI(); fetchBal();
-        }
-      }catch(e){ addLog('ERROR',`SL/TP ${t.symbol}: ${e.message.slice(0,80)}`) }
-    }
-
-    // 3. Open new trades
-    const fresh     = getTrades().filter(t=>t.status==='OPEN');
-    // BUG FIX: always parseInt, never NaN
-    const lev       = parseInt(cfg.leverage || sess.leverage || 10);
-    const direction = cfg.direction || 'LONG';
-    const strategy  = cfg.strategy  || 'scalp_rsi';
-    const tf        = cfg.tf        || '3m';
-    const pairs     = cfg.pairs     || selPairs;
-    // Max trades based on balance — at least 1, max 5
-    const maxTrades = Math.min(5, Math.max(1, Math.floor(bal.available / 2)));
-
-    addLog('INFO', `Cycle | avail:$${bal.available.toFixed(2)} | openTrades:${fresh.length}/${maxTrades} | lev:${lev}x`);
-
-    if(fresh.length >= maxTrades){
-      addLog('INFO',`Positions full (${fresh.length}/${maxTrades})`); return;
-    }
-
-    for(const sym of pairs){
-      if(!bot.running) break;
-      if(fresh.some(t=>t.symbol===sym)) continue;
-      if(fresh.length >= maxTrades) break;
-
-      try{
-        // Get klines and signal
-        const klines    = await bot.client.klines(sym, tf);
-        const sigResult = getSignal(klines, strategy);
-
-        addLog('INFO',`📊 ${sym}: ${sigResult.sig} ${sigResult.conf}% | ${sigResult.why}`);
-
-        // Direction check
-        const dirOK = direction==='BOTH'
-          || (direction==='LONG'  && sigResult.dir==='LONG')
-          || (direction==='SHORT' && sigResult.dir==='SHORT');
-
-        // BUG FIX: lowered min confidence from 62 to 55
-        if(!dirOK || sigResult.sig==='HOLD' || sigResult.conf < 55){
-          addLog('INFO',`⏭ ${sym}: skip — dir:${dirOK} sig:${sigResult.sig} conf:${sigResult.conf}%`);
-          continue;
-        }
-
-        // Calculate position size — FIXED formula
-        const calc   = calcPositionSize(sigResult.price, sigResult.atr, bal.available, lev);
-        const {qty, minQty, minNot} = calcQty(calc.notional, sigResult.price, sym);
-
-        addLog('INFO',`  ${sym}: notional=$${calc.notional.toFixed(3)} margin=$${calc.margin.toFixed(3)} qty=${qty} minQty=${minQty} minNot=$${minNot}`);
-
-        // Validation
-        if(isNaN(qty) || qty <= 0){
-          addLog('WARN',`⏭ ${sym}: qty is NaN or 0 — skipping`); continue;
-        }
-        if(qty < minQty){
-          addLog('WARN',`⏭ ${sym}: qty ${qty} < minQty ${minQty} — need higher leverage or more balance`); continue;
-        }
-        if(calc.notional < minNot){
-          addLog('WARN',`⏭ ${sym}: notional $${calc.notional.toFixed(3)} < min $${minNot}`); continue;
-        }
-        if(calc.margin < 0.1){
-          addLog('WARN',`⏭ ${sym}: margin $${calc.margin.toFixed(4)} too tiny`); continue;
-        }
-
-        // Set margin type and leverage
-        await bot.client.setIsolated(sym);
-        await bot.client.setLev(sym, lev);
-
-        // PLACE THE ORDER
-        const side  = sigResult.dir==='LONG' ? 'BUY' : 'SELL';
-        addLog('INFO',`🚀 Placing ${side} ${sym} qty:${qty} at ~$${sigResult.price.toFixed(4)}`);
-
-        const order = await bot.client.openOrder(sym, side, qty);
-        const ep    = parseFloat(order.avgPrice || order.price || sigResult.price);
-
-        // SL/TP prices
-        const slPrice = sigResult.dir==='LONG' ? ep - calc.slDist : ep + calc.slDist;
-        const tpPrice = sigResult.dir==='LONG' ? ep + calc.tpDist : ep - calc.tpDist;
-
-        const trade = {
-          id        : `${Date.now()}_${sym}`,
-          symbol    : sym,
-          direction : sigResult.dir,
-          leverage  : lev,
-          qty,
-          entryPrice: ep,
-          slPrice,
-          tpPrice,
-          slPct     : calc.slPct,
-          tpPct     : calc.tpPct,
-          margin    : calc.margin,
-          status    : 'OPEN',
-          openedAt  : Date.now(),
-          strategy,
-          orderId   : String(order.orderId||'')
-        };
-
-        addTrade(trade);
-        fresh.push(trade);
-        refreshUI();
-        fetchBal();
-
-        addLog('SUCCESS',
-          `✅ OPENED ${sigResult.dir} ${sym} @ $${ep.toFixed(4)} × ${lev}x | qty:${qty} | margin:$${calc.margin.toFixed(3)} | SL:$${slPrice.toFixed(4)} TP:$${tpPrice.toFixed(4)}`
-        );
-
-      }catch(e){
-        // Log the FULL error from Binance so we can see exactly what's wrong
-        let errMsg = e.message;
-        try{ const j=JSON.parse(errMsg); errMsg=`code:${j.code} msg:${j.msg}` }catch(x){}
-        addLog('ERROR',`❌ ${sym}: ${errMsg}`);
-      }
-    }
-
-  }catch(e){
-    let errMsg = e.message;
-    try{ const j=JSON.parse(errMsg); errMsg=`code:${j.code} msg:${j.msg}` }catch(x){}
-    addLog('ERROR','Cycle error: '+errMsg);
+    document.getElementById('bal-sync').textContent='⚠️ '+e.message.slice(0,50);
   }
 }
 
 // ═══════════════════════════════════════════
-// SAVE CONFIG
+// DIRECTION TOGGLE
 // ═══════════════════════════════════════════
-function saveConfig(){
-  const cfg = {
-    strategy : document.getElementById('c-strat')?.value  || 'scalp_rsi',
-    direction: document.getElementById('c-dir')?.value    || 'LONG',
-    leverage : parseInt(document.getElementById('c-lev')?.value || '10'),
-    tf       : document.getElementById('c-tf')?.value     || '3m',
-    pairs    : selPairs
-  };
-  setCfg(cfg);
-
-  const key = document.getElementById('c-key')?.value?.trim();
-  const sec = document.getElementById('c-secret')?.value?.trim();
-  if(key && sec){
-    sess = {...sess, key, secret:sec, leverage:cfg.leverage, pairs:selPairs};
-    saveSess(sess);
-    bot.client = new Binance(key, sec);
-  } else {
-    sess = {...sess, leverage:cfg.leverage, pairs:selPairs};
-    saveSess(sess);
-  }
-
-  setupPairChips();
-  updateDispLabels();
-  ctrlAlert('ok','✅ Saved!');
-  addLog('INFO','Config: '+JSON.stringify(cfg));
+function setDir(d){
+  tradeDir = d;
+  document.getElementById('dir-long').classList.toggle('on',  d==='LONG');
+  document.getElementById('dir-short').classList.toggle('on', d==='SHORT');
+  const btn = document.getElementById('open-all-btn');
+  btn.className = `open-all-btn ${d==='LONG'?'long':'short'}`;
+  btn.textContent = d==='LONG' ? '📈 OPEN ALL LONG TRADES' : '📉 OPEN ALL SHORT TRADES';
 }
 
 // ═══════════════════════════════════════════
-// REFRESH UI
+// CALCULATE PREVIEW — updates on every change
 // ═══════════════════════════════════════════
-function refreshUI(){
-  const trades = getTrades();
-  const stats  = getStats();
-  const open   = trades.filter(t=>t.status==='OPEN');
+function calcPreview(){
+  const lev     = parseInt(document.getElementById('f-lev').value || '10');
+  const riskPct = parseFloat(document.getElementById('f-risk').value || '20') / 100;
+  const tpPct   = parseFloat(document.getElementById('f-tp').value  || '0.5') / 100;
+  const slPct   = parseFloat(document.getElementById('f-sl').value  || '0.5') / 100;
+  const avail   = liveBal.available || 0;
+  const count   = selPairs.length;
 
-  document.getElementById('s-total').textContent  = stats.total;
-  document.getElementById('s-wins').textContent   = stats.wins;
-  document.getElementById('s-losses').textContent = stats.losses;
-  const pnlEl = document.getElementById('s-pnl');
-  pnlEl.textContent = (stats.pnl>=0?'+$':'-$')+Math.abs(stats.pnl).toFixed(4);
-  pnlEl.className   = 'sv '+(stats.pnl>=0?'pos':'neg');
-
-  document.getElementById('open-cnt').textContent   = open.length+' Open';
-  document.getElementById('open-badge').textContent = open.length+' Open';
-
-  const wr = stats.total>0 ? stats.wins/stats.total*100 : 0;
-  document.getElementById('hfill').style.width      = wr+'%';
-  document.getElementById('hfill').style.background = wr>=60?'var(--green)':wr>=40?'var(--yellow)':'var(--red)';
-  document.getElementById('htxt').textContent       = stats.paused?'🛑 PAUSED':(stats.total>0?`Win ${wr.toFixed(0)}%`:'No trades yet');
-  document.getElementById('htxt').style.color       = stats.paused?'var(--red)':'var(--text)';
-  document.getElementById('hctxt').textContent      = stats.consec+' consec loss';
-  const hp = document.getElementById('hpause');
-  if(stats.paused&&stats.pauseReason){hp.textContent='⚠️ '+stats.pauseReason;hp.style.display='block'}
-  else hp.style.display='none';
-
-  const tbody = document.getElementById('tbody');
-  if(!trades.length){
-    tbody.innerHTML='<tr><td colspan="8" style="text-align:center;color:var(--muted);padding:28px">No trades yet — start the bot!</td></tr>';
+  if(avail <= 0 || count === 0){
+    document.getElementById('prev-margin').textContent   = '—';
+    document.getElementById('prev-notional').textContent = '—';
+    document.getElementById('prev-tp').textContent       = '+—';
+    document.getElementById('prev-sl').textContent       = '-—';
+    document.getElementById('prev-profit').textContent   = '+—';
+    document.getElementById('prev-loss').textContent     = '-—';
+    document.getElementById('prev-fee').textContent      = '—';
+    document.getElementById('prev-count').textContent    = count+' pairs';
+    document.getElementById('trade-count-label').textContent = count+' trades';
     return;
   }
-  tbody.innerHTML = trades.slice(0,100).map(t=>{
-    let pnlHtml = '<span style="color:var(--muted)">Live⟳</span>';
-    if(t.status!=='OPEN'){
-      const p=t.pnl||0;
-      pnlHtml=p>=0?`<span class="pos">+$${p.toFixed(4)}</span>`:`<span class="neg">-$${Math.abs(p).toFixed(4)}</span>`;
-    }
-    const sc=t.status==='OPEN'?'b-open':t.status==='EMERGENCY_EXIT'?'b-em':'b-closed';
-    const dc=t.direction==='LONG'?'b-long':'b-short';
-    return `<tr>
-      <td style="font-weight:700">${t.symbol}</td>
-      <td><span class="badge ${dc}">${t.direction}</span></td>
-      <td style="color:var(--accent)">${t.leverage}x</td>
-      <td>$${(t.entryPrice||0).toFixed(4)}</td>
-      <td style="color:var(--red)">$${(t.slPrice||0).toFixed(4)}</td>
-      <td style="color:var(--green)">$${(t.tpPrice||0).toFixed(4)}</td>
-      <td>${pnlHtml}</td>
-      <td><span class="badge ${sc}">${t.status}</span></td>
-    </tr>`;
-  }).join('');
+
+  // Each trade gets riskPct of available balance as margin
+  const marginEach  = avail * riskPct;
+  const notional    = marginEach * lev;
+  // Profit/loss in USDT from the notional position
+  const profitEach  = notional * tpPct;
+  const lossEach    = notional * slPct;
+  const feeEach     = notional * TAKER * 2; // open + close
+
+  document.getElementById('prev-margin').textContent   = '$'+marginEach.toFixed(2);
+  document.getElementById('prev-notional').textContent = '$'+notional.toFixed(2);
+  document.getElementById('prev-tp').textContent       = '+'+( tpPct*100).toFixed(2)+'% = +$'+profitEach.toFixed(3);
+  document.getElementById('prev-sl').textContent       = '-'+(slPct*100).toFixed(2)+'% = -$'+lossEach.toFixed(3);
+  document.getElementById('prev-profit').textContent   = '+$'+(profitEach - feeEach).toFixed(3);
+  document.getElementById('prev-loss').textContent     = '-$'+(lossEach  + feeEach).toFixed(3);
+  document.getElementById('prev-fee').textContent      = '$'+feeEach.toFixed(4);
+  document.getElementById('prev-count').textContent    = count+' pairs selected';
+  document.getElementById('trade-count-label').textContent = count+' trades';
 }
 
-function renderLogs(){
-  const logs = getLogs();
-  const box  = document.getElementById('logbox');
-  if(!logs.length){box.innerHTML='<div style="color:var(--muted)">No activity yet...</div>';return}
-  box.innerHTML = logs.map(l=>`
-    <div class="lentry">
-      <span class="lt">${new Date(l.t).toLocaleTimeString()}</span>
-      <span class="l${l.level}">[${l.level}]</span>
-      <span class="lm">${l.msg}</span>
-    </div>`).join('');
-}
-function clearLog(){LS.del('fbv4_logs');document.getElementById('logbox').innerHTML='<div style="color:var(--muted)">Cleared</div>'}
+// ═══════════════════════════════════════════
+// OPEN ALL TRADES — one click
+// ═══════════════════════════════════════════
+async function openAllTrades(){
+  if(!api){ showStatus('err','Not connected'); return }
+  if(selPairs.length === 0){ showStatus('err','Select at least one pair'); return }
 
-async function updatePrices(){
-  const pairs = selPairs.length?selPairs:['BTCUSDT','ETHUSDT'];
-  const bar   = document.getElementById('ticker');
-  bar.innerHTML='';
-  for(const p of pairs){
+  const btn = document.getElementById('open-all-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Opening trades...';
+
+  const lev     = parseInt(document.getElementById('f-lev').value  || '10');
+  const riskPct = parseFloat(document.getElementById('f-risk').value || '20') / 100;
+  const tpPct   = parseFloat(document.getElementById('f-tp').value   || '0.5') / 100;
+  const slPct   = parseFloat(document.getElementById('f-sl').value   || '0.5') / 100;
+
+  // Refresh balance first
+  try{ liveBal = await api.balance() }catch(e){}
+  const avail = liveBal.available;
+
+  if(avail < 1){
+    showStatus('err',`Available balance $${avail.toFixed(2)} too low`);
+    btn.disabled = false;
+    setDir(tradeDir);
+    return;
+  }
+
+  let opened=0, failed=0, errors=[];
+
+  for(const sym of selPairs){
     try{
-      const[pr,st]=await Promise.all([
-        fetch(`${FAPI}/fapi/v1/ticker/price?symbol=${p}`).then(r=>r.json()),
-        fetch(`${FAPI}/fapi/v1/ticker/24hr?symbol=${p}`).then(r=>r.json())
-      ]);
-      const ch=parseFloat(st.priceChangePercent), sym=p.replace('USDT','');
-      bar.innerHTML+=`<div class="ti">
-        <span class="tsym">${sym}</span>
-        <span class="tprice">$${parseFloat(pr.price).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:4})}</span>
-        <span class="tchg" style="color:${ch>=0?'var(--green)':'var(--red)'}">${ch>=0?'+':''}${ch.toFixed(2)}%</span>
-      </div>`;
+      // Get current price
+      const price = await api.price(sym);
+      priceCache[sym] = price;
+
+      // Calculate qty
+      const marginEach = avail * riskPct;
+      const notional   = marginEach * lev;
+      const prec       = PREC[sym] || {qtyPrec:3,step:0.001,minQty:0.001,minNot:5};
+      const rawQty     = notional / price;
+      const steps      = Math.floor(rawQty / prec.step);
+      const qty        = parseFloat((steps * prec.step).toFixed(prec.qtyPrec));
+
+      // Validate
+      if(isNaN(qty) || qty <= 0 || qty < prec.minQty){
+        errors.push(`${sym}: qty ${qty} too small (need more balance or higher leverage)`);
+        failed++; continue;
+      }
+      if(notional < prec.minNot){
+        errors.push(`${sym}: notional $${notional.toFixed(2)} < min $${prec.minNot}`);
+        failed++; continue;
+      }
+
+      // Set isolated margin + leverage
+      await api.setIsolated(sym);
+      await api.setLev(sym, lev);
+
+      // Place market order
+      const side  = tradeDir === 'LONG' ? 'BUY' : 'SELL';
+      const order = await api.marketOrder(sym, side, qty);
+      const ep    = parseFloat(order.avgPrice || order.price || price);
+
+      // Calculate SL/TP prices
+      const tpPrice = tradeDir==='LONG' ? ep*(1+tpPct) : ep*(1-tpPct);
+      const slPrice = tradeDir==='LONG' ? ep*(1-slPct) : ep*(1+slPct);
+
+      // Save to local store
+      const pos = {
+        id       : `${Date.now()}_${sym}`,
+        symbol   : sym,
+        direction: tradeDir,
+        leverage : lev,
+        qty,
+        entryPrice: ep,
+        tpPrice,
+        slPrice,
+        tpPct    : tpPct*100,
+        slPct    : slPct*100,
+        margin   : marginEach,
+        openedAt : Date.now(),
+        orderId  : String(order.orderId||'')
+      };
+      addPos(pos);
+      opened++;
+
+    }catch(e){
+      let msg = e.message;
+      try{const j=JSON.parse(msg); msg=`[${j.code}] ${j.msg}`}catch(x){}
+      errors.push(`${sym}: ${msg}`);
+      failed++;
+    }
+  }
+
+  btn.disabled = false;
+  setDir(tradeDir);
+
+  // Refresh UI
+  await fetchBal();
+  renderPositions();
+
+  if(opened > 0 && failed === 0){
+    showStatus('ok', `✅ Opened ${opened} ${tradeDir} trade${opened>1?'s':''} successfully!`);
+  } else if(opened > 0){
+    showStatus('wrn', `✅ ${opened} opened · ❌ ${failed} failed: ${errors[0]}`);
+  } else {
+    showStatus('err', `❌ All failed: ${errors[0] || 'Unknown error'}`);
+  }
+}
+
+// ═══════════════════════════════════════════
+// CLOSE ALL POSITIONS — one click
+// ═══════════════════════════════════════════
+async function closeAllTrades(){
+  const positions = getPos();
+  if(positions.length === 0){
+    // Also try closing via Binance directly (in case of sync issue)
+    try{
+      const live = await api.livePositions();
+      if(live.length === 0){ showStatus('wrn','No open positions to close'); return }
+      await closeFromBinanceLive(live);
+    }catch(e){ showStatus('err','Error: '+e.message.slice(0,80)) }
+    return;
+  }
+
+  const btn = document.getElementById('close-all-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Closing all...';
+
+  let closed=0, failed=0;
+  const stats = getStats();
+
+  for(const pos of [...positions]){
+    try{
+      const price     = await api.price(pos.symbol);
+      const closeSide = pos.direction==='LONG' ? 'SELL' : 'BUY';
+      await api.closePosition(pos.symbol, closeSide, pos.qty);
+
+      // Calculate P&L
+      const diff = pos.direction==='LONG' ? price-pos.entryPrice : pos.entryPrice-price;
+      const fee  = pos.qty * price * TAKER;
+      const net  = diff * pos.qty - fee;
+
+      removePos(pos.id);
+      stats.closed++;
+      stats.pnl += net;
+      if(net >= 0) stats.wins++; else stats.losses++;
+      closed++;
+
+    }catch(e){
+      let msg=e.message;
+      try{const j=JSON.parse(msg);msg=`[${j.code}] ${j.msg}`}catch(x){}
+      // If position not found on exchange, remove from local too
+      if(msg.includes('-2011')||msg.includes('does not exist')){
+        removePos(pos.id); closed++;
+      } else { failed++ }
+    }
+  }
+
+  setStats(stats);
+  btn.disabled = false;
+  btn.textContent = '⬛ CLOSE ALL POSITIONS';
+
+  await fetchBal();
+  renderPositions();
+  renderSummary();
+
+  if(failed === 0) showStatus('ok',`✅ Closed ${closed} position${closed>1?'s':''}!`);
+  else showStatus('wrn',`Closed ${closed} · ${failed} failed (check Binance app)`);
+}
+
+// Close positions directly from Binance live data
+async function closeFromBinanceLive(livePositions){
+  const btn = document.getElementById('close-all-btn');
+  btn.disabled=true; btn.innerHTML='<span class="spinner"></span> Closing...';
+  let closed=0;
+  for(const p of livePositions){
+    const qty  = Math.abs(parseFloat(p.positionAmt));
+    const side = parseFloat(p.positionAmt)>0?'SELL':'BUY';
+    try{
+      await api.closePosition(p.symbol,side,qty);
+      closed++;
     }catch(e){}
   }
-  document.getElementById('ptim').textContent=new Date().toLocaleTimeString();
+  btn.disabled=false; btn.textContent='⬛ CLOSE ALL POSITIONS';
+  await fetchBal();
+  showStatus('ok',`Closed ${closed} position${closed>1?'s':''}`);
 }
 
-function goTab(tab,btn){
-  document.querySelectorAll('.tpage').forEach(p=>p.classList.remove('on'));
-  document.querySelectorAll('.nbtn').forEach(b=>b.classList.remove('on'));
-  document.getElementById('t-'+tab).classList.add('on');
-  btn.classList.add('on');
-  if(tab==='trades') refreshUI();
-  if(tab==='log')    renderLogs();
+// ═══════════════════════════════════════════
+// CLOSE INDIVIDUAL POSITION
+// ═══════════════════════════════════════════
+async function closeOne(posId){
+  const pos = getPos().find(p=>p.id===posId);
+  if(!pos) return;
+
+  const btn = document.getElementById('close-btn-'+posId);
+  if(btn){ btn.disabled=true; btn.textContent='...' }
+
+  try{
+    const price     = await api.price(pos.symbol);
+    const closeSide = pos.direction==='LONG'?'SELL':'BUY';
+    await api.closePosition(pos.symbol, closeSide, pos.qty);
+
+    const diff = pos.direction==='LONG' ? price-pos.entryPrice : pos.entryPrice-price;
+    const fee  = pos.qty * price * TAKER;
+    const net  = diff * pos.qty - fee;
+
+    removePos(pos.id);
+    const s=getStats();
+    s.closed++; s.pnl+=net;
+    if(net>=0) s.wins++; else s.losses++;
+    setStats(s);
+
+    await fetchBal();
+    renderPositions();
+    renderSummary();
+    showStatus(net>=0?'ok':'wrn',
+      `${pos.symbol} closed | Net: ${net>=0?'+':''}$${net.toFixed(4)}`
+    );
+  }catch(e){
+    let msg=e.message;
+    try{const j=JSON.parse(msg);msg=`[${j.code}] ${j.msg}`}catch(x){}
+    if(msg.includes('-2011')||msg.includes('does not exist')){
+      removePos(pos.id); renderPositions();
+      showStatus('wrn','Position already closed on exchange');
+    } else {
+      showStatus('err','Close failed: '+msg.slice(0,80));
+    }
+    if(btn){ btn.disabled=false; btn.textContent='Close' }
+  }
 }
 
-function updateBotUI(on){
-  document.getElementById('sdot').className='sdot'+(on?' on':'');
-  const t=document.getElementById('btxt');
-  t.textContent=on?'RUNNING':'OFF';
-  t.style.color=on?'var(--green)':'var(--muted)';
+// ═══════════════════════════════════════════
+// REFRESH LIVE POSITIONS (sync with Binance)
+// ═══════════════════════════════════════════
+async function refreshLivePositions(){
+  if(!api) return;
+  try{
+    const live = await api.livePositions();
+    const liveSyms = live.map(p=>p.symbol);
+    // Remove local positions that are no longer on Binance
+    const local = getPos();
+    local.forEach(p=>{ if(!liveSyms.includes(p.symbol)) removePos(p.id) });
+    renderPositions();
+  }catch(e){}
 }
 
-function ctrlAlert(type,msg){
-  const el=document.getElementById('calert');
-  el.className=`alert ${type} show`;
-  el.textContent=msg;
-  setTimeout(()=>el.className='alert',7000);
+// ═══════════════════════════════════════════
+// RENDER OPEN POSITIONS
+// ═══════════════════════════════════════════
+async function renderPositions(){
+  const positions = getPos();
+  const list = document.getElementById('positions-list');
+  document.getElementById('pos-count').textContent = positions.length+' open';
+
+  if(positions.length === 0){
+    list.innerHTML = '<div class="no-pos">No open positions</div>';
+    return;
+  }
+
+  // Get live prices for P&L
+  const rows = await Promise.all(positions.map(async pos=>{
+    let livePrice = pos.entryPrice;
+    try{ livePrice = await api.price(pos.symbol) }catch(e){}
+    const diff = pos.direction==='LONG' ? livePrice-pos.entryPrice : pos.entryPrice-livePrice;
+    const upnl = diff * pos.qty;
+    const upnlPct = (diff/pos.entryPrice)*100;
+    return {pos, livePrice, upnl, upnlPct};
+  }));
+
+  list.innerHTML = rows.map(({pos, livePrice, upnl, upnlPct})=>`
+    <div class="pos-item">
+      <div>
+        <div class="pos-sym">${pos.symbol.replace('USDT','')}</div>
+        <div style="font-size:9px;color:var(--muted);font-family:monospace;margin-top:2px">${new Date(pos.openedAt).toLocaleTimeString()}</div>
+      </div>
+      <div class="pos-details">
+        <div class="pos-row1">
+          <span class="pos-dir ${pos.direction.toLowerCase()}">${pos.direction}</span>
+          <span class="pos-lev">${pos.leverage}x</span>
+          <span class="pos-entry">@ $${pos.entryPrice.toFixed(4)}</span>
+        </div>
+        <div class="pos-sltp">
+          SL:$${pos.slPrice.toFixed(4)} · TP:$${pos.tpPrice.toFixed(4)}
+        </div>
+        <div style="font-size:10px;color:var(--muted);font-family:monospace;margin-top:2px">
+          Now: $${livePrice.toFixed(4)} · Qty:${pos.qty}
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+        <div class="pos-pnl ${upnl>=0?'pos':'neg'}">${upnl>=0?'+':''}$${upnl.toFixed(3)}</div>
+        <div style="font-size:9px;color:${upnlPct>=0?'var(--green)':'var(--red)'};font-family:monospace">${upnlPct>=0?'+':''}${upnlPct.toFixed(2)}%</div>
+        <button class="close-btn" id="close-btn-${pos.id}" onclick="closeOne('${pos.id}')">Close</button>
+      </div>
+    </div>
+  `).join('');
 }
 
+// ═══════════════════════════════════════════
+// RENDER SUMMARY
+// ═══════════════════════════════════════════
+function renderSummary(){
+  const s = getStats();
+  if(s.closed === 0){ document.getElementById('summary-card').style.display='none'; return }
+  document.getElementById('summary-card').style.display='block';
+  document.getElementById('sum-total').textContent   = s.closed;
+  document.getElementById('sum-wins').textContent    = s.wins;
+  document.getElementById('sum-losses').textContent  = s.losses;
+  const el = document.getElementById('sum-pnl');
+  el.textContent = (s.pnl>=0?'+$':'-$')+Math.abs(s.pnl).toFixed(4);
+  el.className   = 'pv '+(s.pnl>=0?'pos':'neg');
+}
+
+// ═══════════════════════════════════════════
+// STATUS MESSAGE
+// ═══════════════════════════════════════════
+let statusTimer = null;
+function showStatus(type, msg){
+  const el = document.getElementById('status-msg');
+  el.className = `status-msg ${type} show`;
+  el.textContent = msg;
+  if(statusTimer) clearTimeout(statusTimer);
+  statusTimer = setTimeout(()=>el.className='status-msg', 8000);
+}
+
+// ═══════════════════════════════════════════
+// LOGOUT
+// ═══════════════════════════════════════════
 function logout(){
-  if(!confirm('Logout? API keys will be cleared.'))return;
-  stopBot();clearSess();LS.del('fbv4_running');location.reload();
+  if(!confirm('Logout? Your API keys will be cleared.')) return;
+  clearSess(); location.reload();
 }
 </script>
 </body>
